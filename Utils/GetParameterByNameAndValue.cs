@@ -22,7 +22,7 @@ namespace ParamScannerAddIn.Utils
                 {
                     if (param.Definition != null && param.Definition.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (string.IsNullOrEmpty(parameterValue) || param.AsString() == parameterValue)
+                        if (ParamaterUtils.ContainsParameterValue(param,parameterValue,element))
                         {
                             matchingElements.Add(element);
                             parameterMatched = true;
@@ -43,7 +43,7 @@ namespace ParamScannerAddIn.Utils
                             {
                                 if (param.Definition != null && param.Definition.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    if (string.IsNullOrEmpty(parameterValue) || param.AsString() == parameterValue)
+                                    if (ParamaterUtils.ContainsParameterValue(param, parameterValue, element))
                                     {
                                         matchingElements.Add(element);
                                         break;
