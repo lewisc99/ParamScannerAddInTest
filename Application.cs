@@ -3,7 +3,6 @@ using ParamScannerAddIn.Views.MainWindow;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 using System;
-using System.IO;
 using ParamScannerAddIn.Utils;
 
 namespace ParamScannerAddIn
@@ -32,8 +31,8 @@ namespace ParamScannerAddIn
             {
                 button.ToolTip = "Parameter Scanner";
 
-                Uri uri = new Uri(Path.Combine(Path.GetDirectoryName(thisAssemblyPath), "Resources", "parameters.png"));
-                BitmapImage bitmapImage = new BitmapImage(uri);
+                Uri uriImage = new Uri("pack://application:,,,/ParamScannerAddIn;component/Resources/Parameters.ico");
+                BitmapImage bitmapImage = new BitmapImage(uriImage);
                 button.LargeImage = bitmapImage;
             }
 

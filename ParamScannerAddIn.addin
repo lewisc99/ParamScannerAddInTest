@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>Revit Parameter Scanner</Name>
+		<Assembly>C:\Users\Pichau\source\repos\ParamScannerAddIn\bin\Debug\ParamScannerAddIn.dll</Assembly>
+		<AddInId>e2f8c35d-0393-45c1-a6e3-4bd653dc98a1</AddInId>
+		<FullClassName>ParamScannerAddIn.Application</FullClassName>
+		<VendorId>Lewis Carlos</VendorId>
+		<VendorDescription>https://github.com/lewisc99</VendorDescription>
+	</AddIn>
+</RevitAddIns>

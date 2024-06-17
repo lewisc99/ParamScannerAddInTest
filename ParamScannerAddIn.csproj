@@ -35,9 +35,11 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2020\RevitAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2020\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,10 +78,13 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ParamScannerAddIn.addin" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetDir)ParamScannerAddIn.dll" "$(AppData)\Autodesk\Revit\Addins\2020"
-Copy "$(TargetDir)ParamScannerAddIn.addin" "$(AppData)\Autodesk\Revit\Addins\2020"
-copy "$(ProjectDir)\Resources\Parameters.ico" "$(AppData)\Autodesk\REVIT\Addins\2020\Resources"</PostBuildEvent>
+    <PostBuildEvent>Copy "$(ProjectDir)ParamScannerAddIn.addin" "$(AppData)\Autodesk\Revit\Addins\2020"
+copy "$(ProjectDir)\Resources\Parameters.ico" "$(AppData)\Autodesk\REVIT\Addins\2020\Resources"
+Copy "$(TargetDir)ParamScannerAddIn.dll" "$(AppData)\Autodesk\Revit\Addins\2020"</PostBuildEvent>
   </PropertyGroup>
 </Project>
