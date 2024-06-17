@@ -25,21 +25,29 @@ namespace ParamScannerAddIn
             _mMyMainWindow = null;
             _thisApplication = this;
 
-            RibbonPanel panel = CreateRibbonPanel(application);
-
-            string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
-
-            if (panel.AddItem(new PushButtonData("ParamScannerAddIn", "Parameter Scanner", thisAssemblyPath, "ParamScannerAddIn.MainCommand"))
-                is PushButton button)
+            try
             {
-                button.ToolTip = "Parameter Scanner";
+                RibbonPanel panel = CreateRibbonPanel(application);
 
-                Uri uriImage = new Uri("pack://application:,,,/ParamScannerAddIn;component/Resources/Parameters.ico");
-                BitmapImage bitmapImage = new BitmapImage(uriImage);
-                button.LargeImage = bitmapImage;
+                string thisAssemblyPath = Assembly.GetExecutingAssembly().Location;
+
+                if (panel.AddItem(new PushButtonData("ParamScannerAddIn", "Parameter Scanner", thisAssemblyPath, "ParamScannerAddIn.MainCommand"))
+                    is PushButton button)
+                {
+                    button.ToolTip = "Parameter Scanner";
+
+                    Uri uriImage = new Uri("pack://application:,,,/ParamScannerAddIn;component/Resources/Parameters.ico");
+                    BitmapImage bitmapImage = new BitmapImage(uriImage);
+                    button.LargeImage = bitmapImage;
+                }
+
+                return Result.Succeeded;
             }
-
-            return Result.Succeeded;
+            catch (Exception exception)
+            {
+                ExceptionHandler.HandleException(exception);
+                return Result.Failed;
+            }
         }
 
         public RibbonPanel CreateRibbonPanel(UIControlledApplication uiControlApp)

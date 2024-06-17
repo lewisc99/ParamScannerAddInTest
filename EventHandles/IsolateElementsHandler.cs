@@ -13,11 +13,12 @@ namespace ParamScannerAddIn.EventHandles
             Document doc = Uidoc.Document;
             View activeView = doc.ActiveView;
 
-            using (Transaction t = new Transaction(doc, "Create and Isolate View"))
+            using (Transaction t = new Transaction(doc, "Create and Isolate View For the Elements"))
             {
                 t.Start();
 
                 ElementId newViewId = activeView.Duplicate(ViewDuplicateOption.WithDetailing);
+
                 View newView = doc.GetElement(newViewId) as View;
 
                 if (newView != null)

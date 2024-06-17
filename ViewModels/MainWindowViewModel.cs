@@ -4,6 +4,7 @@ using ParamScannerAddIn.Commands;
 using ParamScannerAddIn.EventHandles;
 using ParamScannerAddIn.Models;
 using ParamScannerAddIn.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -59,6 +60,13 @@ namespace ParamScannerAddIn.ViewModels
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void IsolateInView(object parameter)
         {
             if (string.IsNullOrEmpty(ParameterName))
@@ -67,19 +75,27 @@ namespace ParamScannerAddIn.ViewModels
                 return;
             }
 
-            GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
-            List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
-
-            if (elementsFound.Count == 0)
+            try
             {
-                ShowMessageNotification("No elements found");
-                return;
+                GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
+                List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
+
+                if (elementsFound.Count == 0)
+                {
+                    ShowMessageNotification("No elements found");
+                    return;
+                }
+
+                _mIsolateElementsHandler.Uidoc = _uiDoc;
+                _mIsolateElementsHandler.Raise(elementsFound.Select(elementItem => elementItem.Id).ToList());
+
+                ShowMessageNotification("Item Isolated");
+
             }
-
-            _mIsolateElementsHandler.Uidoc = _uiDoc;
-            _mIsolateElementsHandler.Raise(elementsFound.Select(elementItem => elementItem.Id).ToList());
-
-            ShowMessageNotification("Item Isolated");
+            catch (Exception exception)
+            {
+                ExceptionHandler.HandleException(exception);
+            }
         }
 
         private void SelectElementsByParameter(object parameter)
@@ -90,30 +106,30 @@ namespace ParamScannerAddIn.ViewModels
                 return;
             }
 
-            GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
-            List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
-
-            if (elementsFound.Count == 0)
+            try
             {
-                ShowMessageNotification("No elements found");
-                return;
+                GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
+                List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
+
+                if (elementsFound.Count == 0)
+                {
+                    ShowMessageNotification("No elements found");
+                    return;
+                }
+
+                _uiDoc.Selection.SetElementIds(elementsFound.Select(foundElement => foundElement.Id).ToList());
+
+                ShowMessageNotification("Items Selected");
             }
-
-            _uiDoc.Selection.SetElementIds(elementsFound.Select(foundElement => foundElement.Id).ToList());
-
-            ShowMessageNotification("Items Selected");
+            catch (Exception exception)
+            {
+                ExceptionHandler.HandleException(exception);
+            }
         }
 
         private void ShowMessageNotification(string message)
         {
             TaskDialog.Show("Notification", message);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

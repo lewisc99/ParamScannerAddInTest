@@ -1,11 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ParamScannerAddIn.EventHandles;
-using ParamScannerAddIn.Utils;
-using System.Collections.Generic;
 using System;
 using System.Windows;
-using System.Linq;
 using ParamScannerAddIn.ViewModels;
 
 namespace ParamScannerAddIn.Views.MainWindow
