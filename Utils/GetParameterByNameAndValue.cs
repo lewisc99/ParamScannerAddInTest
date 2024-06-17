@@ -1,5 +1,4 @@
 ﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +6,7 @@ namespace ParamScannerAddIn.Utils
 {
     public class GetParameterByNameAndValue
     {
-        public List<Element> FindParameterByNameAndValue(Document doc, string parameterName, string parameterValue)
+        public List<Element> FindParameterByNameAndValue(Document doc, string parameterName, string parameterValue = null)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
 
@@ -17,61 +16,46 @@ namespace ParamScannerAddIn.Utils
 
             foreach (Element element in allElements)
             {
+                bool parameterMatched = false;
+
                 foreach (Parameter param in element.Parameters)
                 {
                     if (param.Definition != null && param.Definition.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (param.HasValue)
+                        if (string.IsNullOrEmpty(parameterValue) || param.AsString() == parameterValue)
                         {
-                            if (param.AsString() == parameterValue)
-                            {
-                                matchingElements.Add(element);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            TaskDialog.Show("Parameter Found", $"Parameter '{parameterName}' found in Element ID: {element.Id} but has no value.");
+                            matchingElements.Add(element);
+                            parameterMatched = true;
+                            break;
                         }
                     }
                 }
 
-                // Check type parameters
-                ElementId typeId = element.GetTypeId();
-                if (typeId != ElementId.InvalidElementId)
+                if (!parameterMatched)
                 {
-                    Element typeElement = doc.GetElement(typeId);
-                    if (typeElement != null)
+                    ElementId typeId = element.GetTypeId();
+                    if (typeId != ElementId.InvalidElementId)
                     {
-                        foreach (Parameter param in typeElement.Parameters)
+                        Element typeElement = doc.GetElement(typeId);
+                        if (typeElement != null)
                         {
-                            if (param.Definition != null && param.Definition.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase))
+                            foreach (Parameter param in typeElement.Parameters)
                             {
-                                if (param.HasValue)
+                                if (param.Definition != null && param.Definition.Name.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase))
                                 {
-                                    if (param.AsString() == parameterValue)
+                                    if (string.IsNullOrEmpty(parameterValue) || param.AsString() == parameterValue)
                                     {
                                         matchingElements.Add(element);
                                         break;
                                     }
                                 }
-                                else
-                                {
-                                    TaskDialog.Show("Parameter Found", $"Parameter '{parameterName}' found in Type Element ID: {typeElement.Id} but has no value.");
-                                }
                             }
                         }
                     }
                 }
             }
 
-            foreach (Element matchingElement in matchingElements)
-            {
-                TaskDialog.Show("Matching Element", $"Element ID: {matchingElement.Id}, Name: {matchingElement.Name}");
-            }
-
             return matchingElements;
         }
     }
-
 }

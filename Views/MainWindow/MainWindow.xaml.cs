@@ -45,8 +45,7 @@ namespace ParamScannerAddIn.Views.MainWindow
             GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
             List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, paramName, paramValue);
 
-            if (elementsFound.Count == 0)
-            { return; }
+            if (elementsFound.Count == 0) return;
 
             _mIsolateElementsHandler.Uidoc = _uiDoc;
 
@@ -70,13 +69,9 @@ namespace ParamScannerAddIn.Views.MainWindow
             GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
             List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, paramName, paramValue);
 
-            if (elementsFound.Count == 0)
-            { return; }
+            if (elementsFound.Count == 0) return;
 
-            foreach (Element matchingElement in elementsFound)
-            {
-                _uiDoc.Selection.SetElementIds(elementsFound.Select(foundElement => foundElement.Id).ToList());
-            }
+            _uiDoc.Selection.SetElementIds(elementsFound.Select(foundElement => foundElement.Id).ToList());
 
             MessageBox.Show("Itens Selected");
         }
