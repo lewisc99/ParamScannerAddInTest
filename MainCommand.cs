@@ -12,7 +12,7 @@ namespace ParamScannerAddIn
         {
             try
             {
-                Application._thisApplication.ShowWindow(commandData.Application);
+                Startup._thisApplication.ShowWindow(commandData.Application);
                 return Result.Succeeded;
             }
             catch (Exception ex)

@@ -4,15 +4,18 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using System;
 using ParamScannerAddIn.Utils;
+using ParamScannerAddIn.EventHandles;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace ParamScannerAddIn
 {
     [Autodesk.Revit.Attributes.Transaction(Autodesk.Revit.Attributes.TransactionMode.Manual)]
     [Autodesk.Revit.Attributes.Regeneration(Autodesk.Revit.Attributes.RegenerationOption.Manual)]
-    public class Application : IExternalApplication
+    public class Startup : IExternalApplication
     {
 
-        public static Application _thisApplication;
+        public static Startup _thisApplication;
         private MainWindow _mMyMainWindow;
 
         public Result OnShutdown(UIControlledApplication a) => Result.Succeeded;
@@ -70,7 +73,13 @@ namespace ParamScannerAddIn
         {
             if (_mMyMainWindow == null || !_mMyMainWindow.IsVisible)
             {
-                _mMyMainWindow = new MainWindow();
+                IsolateElementsHandler evStr = new IsolateElementsHandler();
+                _mMyMainWindow = new MainWindow(uiapp, evStr);
+
+                if (Application.Current != null)
+                {
+                    Application.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
+                }
             }
             else
             {
@@ -79,6 +88,12 @@ namespace ParamScannerAddIn
             }
 
             _mMyMainWindow.Show();
+        }
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            ExceptionHandler.HandleException(e.Exception); 
         }
     }
 }
