@@ -16,16 +16,20 @@ namespace ParamScannerAddIn.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        #region Properties
         private ParameterModel _parameterModel;
         private readonly Document _doc;
         private readonly UIDocument _uiDoc;
         private readonly IsolateElementsHandler _mIsolateElementsHandler;
         private ElementsFoundNotification _elementsFoundNotificationWindow;
+        #endregion
 
-
+        #region Commands
         public ICommand IsolateInViewCommand { get; }
         public ICommand SelectElementsByParameterCommand { get; }
+        #endregion
 
+        #region Constructor
         public MainWindowViewModel(Document doc, UIDocument uiDoc, IsolateElementsHandler isolateElementsHandler)
         {
             _parameterModel = new ParameterModel();
@@ -36,7 +40,9 @@ namespace ParamScannerAddIn.ViewModels
             IsolateInViewCommand = new RelayCommand(IsolateInView);
             SelectElementsByParameterCommand = new RelayCommand(SelectElementsByParameter);
         }
+        #endregion
 
+        #region ParameterName
         public string ParameterName
         {
             get => _parameterModel.ParameterName;
@@ -49,7 +55,9 @@ namespace ParamScannerAddIn.ViewModels
                 }
             }
         }
+        #endregion
 
+        #region ParameterValue
         public string ParameterValue
         {
             get => _parameterModel.ParameterValue;
@@ -62,14 +70,22 @@ namespace ParamScannerAddIn.ViewModels
                 }
             }
         }
+        #endregion
 
+        #region Config Event handlers
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
 
+        #region Isolate Elements in a new view
+        /// <summary>
+        /// Isolate Elements in a new view
+        /// </summary>
+        /// <param name="parameter">Parameter Name</param>
         private void IsolateInView(object parameter)
         {
             if (string.IsNullOrEmpty(ParameterName))
@@ -112,7 +128,13 @@ namespace ParamScannerAddIn.ViewModels
                 ExceptionHandler.HandleException(exception);
             }
         }
+        #endregion
 
+        #region Select Elements By Parameter in View
+        /// <summary>
+        /// Select Elements By Parameter in View
+        /// </summary>
+        /// <param name="parameter">Parameter Name</param>
         private void SelectElementsByParameter(object parameter)
         {
             if (string.IsNullOrEmpty(ParameterName))
@@ -155,10 +177,17 @@ namespace ParamScannerAddIn.ViewModels
                 ExceptionHandler.HandleException(exception);
             }
         }
+        #endregion
 
+        #region Show Message Notification Box
+        /// <summary>
+        /// Show  Message Notification Box
+        /// </summary>
+        /// <param name="message">Message Text</param>
         private void ShowMessageNotification(string message)
         {
             TaskDialog.Show("Notification", message);
-        }
+        } 
+        #endregion
     }
 }

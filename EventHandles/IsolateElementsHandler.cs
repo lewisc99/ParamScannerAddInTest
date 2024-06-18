@@ -8,6 +8,12 @@ namespace ParamScannerAddIn.EventHandles
     {
         public UIDocument Uidoc { get; set; }
 
+        #region Execute
+        /// <summary>
+        /// Responsible to Execute A External Event that needs Transaction
+        /// </summary>
+        /// <param name="uiApp">To Get the uiDoc and Activated View</param>
+        /// <param name="elementIds">Elements Id to be shown in the isolate View</param>
         public override void Execute(UIApplication uiApp, List<ElementId> elementIds)
         {
             Document doc = Uidoc.Document;
@@ -34,7 +40,8 @@ namespace ParamScannerAddIn.EventHandles
                     t.RollBack();
                 }
             }
-        }
+        } 
+        #endregion
     }
 
 }

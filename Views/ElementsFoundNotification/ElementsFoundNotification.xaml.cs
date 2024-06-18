@@ -11,6 +11,7 @@ namespace ParamScannerAddIn.Views.ElementsFoundNotification
     {
         private readonly IsolateElementsHandler _mIsolateElementsHandler;
 
+        #region Constructor
         public ElementsFoundNotification(List<Element> elementsFoundList)
         {
             InitializeComponent();
@@ -18,10 +19,13 @@ namespace ParamScannerAddIn.Views.ElementsFoundNotification
             DataContext = viewModel;
             Closed += MainWindow_Closed;
         }
-
+        #endregion
+        
+        #region Events
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             Close();
-        }
+        } 
+        #endregion
     }
 }

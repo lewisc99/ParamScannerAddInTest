@@ -8,6 +8,13 @@ namespace ParamScannerAddIn
     [Transaction(TransactionMode.Manual)]
     public class MainCommand : IExternalCommand
     {
+        /// <summary>
+        /// Main Command to be core, and handle Transactions and events.
+        /// </summary>
+        /// <param name="commandData"></param>
+        /// <param name="message"></param>
+        /// <param name="elements"></param>
+        /// <returns></returns>
         public virtual Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             try

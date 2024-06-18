@@ -10,10 +10,13 @@ namespace ParamScannerAddIn.Views.MainWindow
     #region Main Window View Scanner
     public partial class MainWindow : Window
     {
+        #region Properties
         private readonly Document _doc;
         private readonly UIDocument _uiDoc;
         private readonly IsolateElementsHandler _mIsolateElementsHandler;
+        #endregion
 
+        #region Constructor
         public MainWindow(UIApplication uiApp, IsolateElementsHandler isolateElementsHandler)
         {
             InitializeComponent();
@@ -21,11 +24,14 @@ namespace ParamScannerAddIn.Views.MainWindow
             DataContext = viewModel;
             Closed += MainWindow_Closed;
         }
+        #endregion
 
+        #region Events
         private void MainWindow_Closed(object sender, EventArgs e)
         {
             Close();
         }
-    } 
+        #endregion
+    }
     #endregion
 }

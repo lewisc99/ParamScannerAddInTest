@@ -16,6 +16,23 @@ namespace ParamScannerAddIn.ViewModels
         private ObservableCollection<ElementParamModel> _elementsList;
         private string _elementsCountText;
 
+        public ICommand ListOfElementsFoundCommand { get; }
+
+        #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="elementsFoundList">List of all Elements found to be inserted into a list</param>
+        public ElementsFoundNotificationViewModel(List<Element> elementsFoundList)
+        {
+            _elementsList = new ObservableCollection<ElementParamModel>();
+            ListOfElementsFoundCommand = new RelayCommand(param => ListOfElementsFound(elementsFoundList));
+
+            ListOfElementsFound(elementsFoundList);
+        }
+        #endregion
+
+        #region ElementsList
         public ObservableCollection<ElementParamModel> ElementsList
         {
             get => _elementsList;
@@ -24,8 +41,10 @@ namespace ParamScannerAddIn.ViewModels
                 _elementsList = value;
                 OnPropertyChanged();
             }
-        }
+        } 
+        #endregion
 
+        #region ElementsCountText
         public string ElementsCountText
         {
             get => _elementsCountText;
@@ -34,25 +53,23 @@ namespace ParamScannerAddIn.ViewModels
                 _elementsCountText = value;
                 OnPropertyChanged();
             }
-        }
-
-        public ICommand ListOfElementsFoundCommand { get; }
-
-        public ElementsFoundNotificationViewModel(List<Element> elementsFoundList)
-        {
-            _elementsList = new ObservableCollection<ElementParamModel>();
-            ListOfElementsFoundCommand = new RelayCommand(param => ListOfElementsFound(elementsFoundList));
-
-            ListOfElementsFound(elementsFoundList);
-        }
-
+        } 
+        #endregion
+       
+        #region Config Event Handler
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
 
+        #region List Of Elements Found
+        /// <summary>
+        /// Will handle the list and add into a new list to show in the Elements Found View
+        /// </summary>
+        /// <param name="elementsFoundList">Elements found match by the Parameter Name and value</param>
         private void ListOfElementsFound(List<Element> elementsFoundList)
         {
             try
@@ -74,6 +91,7 @@ namespace ParamScannerAddIn.ViewModels
             {
                 ExceptionHandler.HandleException(exception);
             }
-        }
+        } 
+        #endregion
     }
 }
