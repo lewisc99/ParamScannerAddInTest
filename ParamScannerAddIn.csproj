@@ -43,6 +43,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Models\ElementParamModel.cs" />
     <Compile Include="Models\ParameterModel.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="EventHandles\ExternalEventHandler.cs" />
@@ -63,7 +66,11 @@
     <Compile Include="Utils\ExceptionHandler.cs" />
     <Compile Include="Utils\GetParameterByNameAndValue.cs" />
     <Compile Include="Utils\ParamaterUtils.cs" />
+    <Compile Include="ViewModels\ElementsFoundNotificationViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\ElementsFoundNotification\ElementsFoundNotification.xaml.cs">
+      <DependentUpon>ElementsFoundNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -75,6 +82,10 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ElementsFoundNotification\ElementsFoundNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

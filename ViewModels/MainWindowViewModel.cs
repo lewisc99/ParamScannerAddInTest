@@ -4,6 +4,7 @@ using ParamScannerAddIn.Commands;
 using ParamScannerAddIn.EventHandles;
 using ParamScannerAddIn.Models;
 using ParamScannerAddIn.Utils;
+using ParamScannerAddIn.Views.ElementsFoundNotification;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,8 @@ namespace ParamScannerAddIn.ViewModels
         private readonly Document _doc;
         private readonly UIDocument _uiDoc;
         private readonly IsolateElementsHandler _mIsolateElementsHandler;
+        private ElementsFoundNotification _elementsFoundNotificationWindow;
+
 
         public ICommand IsolateInViewCommand { get; }
         public ICommand SelectElementsByParameterCommand { get; }
@@ -77,6 +80,12 @@ namespace ParamScannerAddIn.ViewModels
 
             try
             {
+                if (_elementsFoundNotificationWindow != null)
+                {
+                    _elementsFoundNotificationWindow.Close();
+                    _elementsFoundNotificationWindow = null;
+                }
+
                 GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
                 List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
 
@@ -88,6 +97,12 @@ namespace ParamScannerAddIn.ViewModels
 
                 _mIsolateElementsHandler.Uidoc = _uiDoc;
                 _mIsolateElementsHandler.Raise(elementsFound.Select(elementItem => elementItem.Id).ToList());
+
+                if (!string.IsNullOrEmpty(this.ParameterName) && !string.IsNullOrEmpty(this.ParameterValue))
+                {
+                    _elementsFoundNotificationWindow = new ElementsFoundNotification(elementsFound);
+                    _elementsFoundNotificationWindow.Show();
+                }
 
                 ShowMessageNotification("Item Isolated");
 
@@ -108,6 +123,13 @@ namespace ParamScannerAddIn.ViewModels
 
             try
             {
+
+                if (_elementsFoundNotificationWindow != null)
+                {
+                    _elementsFoundNotificationWindow.Close();
+                    _elementsFoundNotificationWindow = null;
+                }
+
                 GetParameterByNameAndValue parameterFinder = new GetParameterByNameAndValue();
                 List<Element> elementsFound = parameterFinder.FindParameterByNameAndValue(_doc, ParameterName, ParameterValue);
 
@@ -119,7 +141,14 @@ namespace ParamScannerAddIn.ViewModels
 
                 _uiDoc.Selection.SetElementIds(elementsFound.Select(foundElement => foundElement.Id).ToList());
 
+                if (!string.IsNullOrEmpty(this.ParameterName) && !string.IsNullOrEmpty(this.ParameterValue))
+                {
+                    _elementsFoundNotificationWindow = new ElementsFoundNotification(elementsFound);
+                    _elementsFoundNotificationWindow.Show();
+                }
+
                 ShowMessageNotification("Items Selected");
+
             }
             catch (Exception exception)
             {
